@@ -1,0 +1,897 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2513
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\froman\fcharset0 Times-Bold;\f1\froman\fcharset0 Times-Roman;\f2\ftech\fcharset77 Symbol;
+}
+{\colortbl;\red255\green255\blue255;\red192\green0\blue0;}
+{\*\expandedcolortbl;;\csgenericrgb\c75294\c0\c0;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid101\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid2}
+{\list\listtemplateid3\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid201\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid3}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}{\listoverride\listid3\listoverridecount0\ls3}}
+\paperw11900\paperh16840\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\ri-340\sl360\slmult1\qc\partightenfactor0
+
+\f0\b\fs26 \cf0 B\'e0i T\uc0\u7853 p Th\u7921 c H\'e0nh S\u7889  2: T\u7841 o B\u7843 ng\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 \
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf0 1. T\uc0\u7841 o CSDL c\'f3 t\'ean : \
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 Create DATABASE QuanLyBanHang;\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf0 \
+2. S\uc0\u7917  d\u7909 ng CSDL QuanLyBanHang, t\u7841 o c\'e1c b\u7843 ng sau :\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 \
+create DATABASE QuanLyBanHang;\
+\
+USE QuanLyBanHang;\
+\
+CREATE TABLE TinhTP (\
+    MaTP CHAR(2) PRIMARY KEY NOT NULL,\
+    TenTP VARCHAR(30) NOT NULL DEFAULT ' '\
+);\
+\
+CREATE TABLE DonVi (\
+    MaDV CHAR(2) PRIMARY KEY NOT NULL,\
+    TenDV VARCHAR(30) NOT NULL UNIQUE\
+);\
+\
+CREATE TABLE NhaCungCap (\
+    MaNCC INT PRIMARY KEY NOT NULL AUTO_INCREMENT,\
+    TenNCC VARCHAR(30) NOT NULL UNIQUE,\
+    DiaChi VARCHAR(60) NOT NULL DEFAULT ' ',\
+    DienThoai VARCHAR(11) NOT NULL DEFAULT ' '\
+);\
+\
+CREATE TABLE MatHang (\
+    MaMH INT PRIMARY KEY NOT NULL AUTO_INCREMENT,\
+    TenMH VARCHAR(30) NOT NULL UNIQUE,\
+    DonViTinh VARCHAR(20) NOT NULL DEFAULT ' ',\
+    DonGia INT UNSIGNED NOT NULL DEFAULT 0,\
+    HinhSP TEXT NULL,\
+    MaNCC INT NOT NULL\
+);\
+\
+CREATE TABLE KhachHang (\
+    MaKH VARCHAR(10) PRIMARY KEY NOT NULL,\
+    TenKH VARCHAR(40) NOT NULL DEFAULT ' ',\
+    DiaChi VARCHAR(60) NOT NULL DEFAULT ' ',\
+    DienThoai VARCHAR(11) NOT NULL DEFAULT ' ',\
+    MaTP CHAR(2) NOT NULL\
+);\
+\
+CREATE TABLE NhanVien (\
+    MaNV INT PRIMARY KEY NOT NULL AUTO_INCREMENT,\
+    HoLot VARCHAR(30) NOT NULL DEFAULT ' ',\
+    TenNV VARCHAR(20) NOT NULL DEFAULT ' ',\
+    Phai ENUM('F', 'M') NOT NULL DEFAULT 'F',\
+    LuongCB INT UNSIGNED NOT NULL DEFAULT 0,\
+    NgayNViec DATE NOT NULL,\
+    DiaChiNV VARCHAR(60) NOT NULL DEFAULT ' ',\
+    DienThoaiNV VARCHAR(11) NULL DEFAULT ' ',\
+    HinhNV TEXT NULL\
+);\
+\
+CREATE TABLE DonDatHang (\
+    MaDDH CHAR(5) PRIMARY KEY NOT NULL,\
+    MaKH VARCHAR(10) NOT NULL,\
+    MaNV INT NOT NULL,\
+    NgayDH DATE NOT NULL,\
+    NgayGiao DATE\
+);\
+\
+CREATE TABLE ChiTietDDH (\
+    MaDDH CHAR(5) NOT NULL,\
+    MaMH INT NOT NULL,\
+    SoLuong INT NOT NULL,\
+    GiamGia DATE DEFAULT 0,\
+    PRIMARY KEY (MaDDH, MaMH)\
+);\
+\
+CREATE TABLE ChamCong (\
+    Thang TINYINT UNSIGNED NOT NULL,\
+    Nam SMALLINT UNSIGNED NOT NULL,\
+    MaNV INT NOT NULL,\
+    NgayCong TINYINT DEFAULT 0,\
+    PRIMARY KEY (Thang, Nam, MaNV)\
+);\
+\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf0 3. M\'f4 h\'ecnh quan h\uc0\u7879  gi\u7919 a c\'e1c b\u7843 ng :\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 ALTER TABLE `ChamCong` ADD FOREIGN KEY (`MaNV`) REFER `NhanVien`(`MaNV`) ON DELETE CASCADE ON UPDATE CASCADE;\
+\
+ALTER TABLE `DonDatHang` ADD FOREIGN KEY (`MaNV`) REFERENCES `NhanVien`(`MaNV`) ON DELETE CASCADE ON UPDATE CASCADE;\
+\
+ALTER TABLE `NhanVien` ADD FOREIGN KEY (`MaDV`) REFERENCES `DonVi`(`MaDV`) ON DELETE CASCADE ON UPDATE CASCADE;\
+\
+ALTER TABLE `DonDatHang` ADD FOREIGN KEY (`MaKH`) REFERENCES `KhachHang`(`MaKH`) ON DELETE CASCADE ON UPDATE CASCADE;\
+\
+ALTER TABLE `ChiTietDDH` ADD FOREIGN KEY (`MaDDH`) REFERENCES `DonDatHang`(`MaDDH`) ON DELETE CASCADE ON UPDATE CASCADE;\
+\
+CHANGE TABLE `ChiTietDDH` ADD FOREIGN KEY (`MaMH`) REFERENCES `MatHang`(`MaMH`) ON DELETE CASCADE ON UPDATE CASCADE;\
+\
+ALTER TABLE `KhachHang` ADD FOREIGN KEY (`MaTP`) REFER `TinhTP`(`MaTP`) ON DELETE CASCADE ON UPDATE CASCADE;\
+\
+ALTER TABLE `MatHang` ADD FOREIGN KEY (`MaNCC`) REFER `NhaCungCap`(`MaNCC`) ON DELETE CASCADE ON UPDATE CASCADE;\
+\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf0 4. Th\uc0\u7921 c hi\u7879 n m\u7897 t s\u7889  c\'e2u l\u7879 nh tr\'ean b\u7843 ng :\
+\pard\pardeftab720\li426\fi-360\ri-340\sl360\slmult1\partightenfactor0
+\ls1\ilvl0
+\f2\b0 \cf0 \'a5	
+\f0\b Xem danh s\'e1ch c\'e1c b\uc0\u7843 ng c\u7911 a CSDL QuanlyBanHang.\
+\pard\pardeftab720\li426\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 SHOW TABLES;\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+\cf0 \
+\pard\pardeftab720\li426\fi-360\ri-340\sl360\slmult1\partightenfactor0
+\ls2\ilvl0
+\f2 \cf0 \'a5	
+\f0\b Xem danh s\'e1ch c\uc0\u7911 a c\'e1c c\u7897 t trong t\u7915 ng b\u7843 ng.\
+\pard\pardeftab720\li426\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 -- Xem danh s\'e1ch c\'e1c c\uc0\u7897 t trong b\u7843 ng TinhTP\
+SHOW COLUMNS FROM TinhTP;\
+\
+-- Xem danh s\'e1ch c\'e1c c\uc0\u7897 t trong b\u7843 ng DonVi\
+SHOW COLUMNS FROM DonVi;\
+\
+-- Xem danh s\'e1ch c\'e1c c\uc0\u7897 t trong b\u7843 ng NhaCungCap\
+SHOW COLUMNS FROM NhaCungCap;\
+\
+-- Xem danh s\'e1ch c\'e1c c\uc0\u7897 t trong b\u7843 ng MatHang\
+SHOW COLUMNS FROM MatHang;\
+\
+-- Xem danh s\'e1ch c\'e1c c\uc0\u7897 t trong b\u7843 ng KhachHang\
+SHOW COLUMNS FROM KhachHang;\
+\
+-- Xem danh s\'e1ch c\'e1c c\uc0\u7897 t trong b\u7843 ng NhanVien\
+SHOW COLUMNS FROM NhanVien;\
+\
+-- Xem danh s\'e1ch c\'e1c c\uc0\u7897 t trong b\u7843 ng DonDatHang\
+SHOW COLUMNS FROM DonDatHang;\
+\
+-- Xem danh s\'e1ch c\'e1c c\uc0\u7897 t trong b\u7843 ng ChiTietDDH\
+SHOW COLUMNS FROM ChiTietDDH;\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+\cf0 \
+\pard\pardeftab720\li426\fi-360\ri-340\sl360\slmult1\partightenfactor0
+\ls3\ilvl0
+\f2 \cf0 \'a5	
+\f0\b Xem c\uc0\u7845 u tr\'fac c\u7911 a t\u7915 ng b\u7843 ng.\
+\pard\pardeftab720\li426\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 -- Xem c\uc0\u7845 u tr\'fac c\u7911 a b\u7843 ng TinhTP\
+DESC TinhTP;\
+\
+-- Xem c\uc0\u7845 u tr\'fac c\u7911 a b\u7843 ng DonVi\
+DESC DonVi;\
+\
+-- Xem c\uc0\u7845 u tr\'fac c\u7911 a b\u7843 ng NhaCungCap\
+DESC NhaCungCap;\
+\
+-- Xem c\uc0\u7845 u tr\'fac c\u7911 a b\u7843 ng MatHang\
+DESC MatHang;\
+\
+-- Xem c\uc0\u7845 u tr\'fac c\u7911 a b\u7843 ng KhachHang\
+DESC KhachHang;\
+\
+-- Xem c\uc0\u7845 u tr\'fac c\u7911 a b\u7843 ng NhanVien\
+DESC NhanVien;\
+\
+-- Xem c\uc0\u7845 u tr\'fac c\u7911 a b\u7843 ng DonDatHang\
+DESC DonDatHang;\
+\
+-- Xem c\uc0\u7845 u tr\'fac c\u7911 a b\u7843 ng ChiTietDDH\
+DESC ChiTietDDH;\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+\cf0 \
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf0 5. Nh\uc0\u7853 p d\u7919  li\u7879 u v\'e0o b\u7843 ng\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 \
+INSERT INTO TinhTP (MaTP, TenTP)\
+VALUES\
+    ('CT', 'Can Tho'),\
+    ('HN', 'H\'e0 N\uc0\u7897 i'),\
+    ('HP', 'H\uc0\u7843 i Ph\'f2ng'),\
+    ('HU', 'Hu\'e9'),\
+    ('ND', 'Nam \uc0\u272 \u7883 nh'),\
+    ('NT', 'Nha Trang'),\
+    ('TP', 'TP. H\uc0\u7891  Ch\'ed Minh'),\
+    ('VI', 'Vinh');\
+\
+INSERT INTO DonVi (MaDV, TenDV)\
+VALUES\
+    ('GD', 'Ban Gi\'e1m \uc0\u272 \u7889 c'),\
+    ('KT', 'K\uc0\u7871  To\'e1n'),\
+    ('NV', 'Nghi\uc0\u7879 p V\u7909 '),\
+    ('TC', 'T\uc0\u7893  Ch\u7913 c');\
+\
+INSERT INTO NhaCungCap (MaNCC, TenNCC, DiaChi, DienThoai)\
+VALUES\
+    (1, 'CTY \uc0\u272 \u7891  H\u7897 p T\'e2n Bin', 'TP.HCM', '123456'),\
+    (2, 'CTY R\uc0\u432 \u7907 u B\'ecnh T\'e2n', 'Dien Thoai', '342342'),\
+    (3, 'CTY \uc0\u272 \u7913 c Ph\'e1t', 'TP.HCM', '453456'),\
+    (4, 'CTY Rau Qu\uc0\u7843  Vi\u7879 t Nam.', 'H\'e0 N\u7897 i', '867567'),\
+    (5, 'CTY Th\uc0\u7911 y S\u259 n Ti\u7873 n Giang', 'Ti\u7873 n Giang', '876876'),\
+    (6, 'CTY VINAMILK', 'TP.HCM', '646478'),\
+    (7, 'CTY N\'f4ng S\uc0\u7843 n L\'e2m \u272 \u7891 ng', '\u272 \'e0 L\u7841 t', '565467');\
+\
+INSERT INTO MatHang (MaMH, TenMH, DonViTinh, DonGia, HinhSP, MaNCC)\
+VALUES\
+    (1, 'R\uc0\u432 \u7907 u', 'Chai', 230.00, NULL, 7),\
+    (2, 'Ti\'eau', 'H\'f4p', 40.00, NULL, 7),\
+    (3, 'B\'e1nh Kem', 'C\'e1i', 10.00, NULL, 3),\
+    (4, 'B\uc0\u417 ', 'Kg', 38.00, NULL, 6),\
+    (5, 'B\'e1nh M\'ec', 'C\'e1i', 8.00, NULL, 3),\
+    (6, 'Nem', 'Kg', 23.79, NULL, 1),\
+    (7, 'T\'e1o', 'Kg', 5.00, NULL, 4),\
+    (8, 'C\'e1 H\uc0\u7897 p', 'Th\'f9ng', 62.50, NULL, 1);\
+\
+INSERT INTO KhachHang (MaKH, TenKH, DiaChi, MaTP, DienThoai)\
+VALUES\
+    ('CODACO', 'C\uc0\u417  Kh\'ed D\'e2n D\u7909 ng', '388 H\'f2a H\u7843 o P5', 'TP', '1757828'),\
+    ('COTEC', 'C\'f4ng Ngh\uc0\u7879  M\u7899 i', '319 Nguy\u7877 n Tr\'e3i P7', 'CT', '7657657'),\
+    ('DHP', '\uc0\u272 \u7841 i H\u432 ng Ph\'e1t', '343 Nh\u7853 t T\u7843 o P16', 'NT', '6546565'),\
+    ('GIAY32', 'Gi\'e0y 32', '105A Ng\'f4 Quy\uc0\u7873 n P11', 'CT', '6565468'),\
+    ('RUBIMEX', 'C\'f4ng Nghi\uc0\u7879 p Cao Su', '220 L\'ea V\u259 n S\u7929 ', 'NT', '2987912'),\
+    ('SAMACO', 'SXKD D\uc0\u7883 ch V\u7909  T\u7893 ng H\u7907 p', '56 Nguy\u7877 n Bi\u7875 u P2', 'CT', '1987987'),\
+    ('SAMECO', 'C\uc0\u417  kh\'ed S\'e0i G\'f2n', '156 L\'ea \u272 \u7841 i H\'e0nh P7', 'HN', '2397997'),\
+    ('TRACODI', '\uc0\u272 \u7847 u t\u432  ph\'e1t tri\u7875 n GTVT', 'H\'e0m Nghi Q1', 'HP', '0976766'),\
+    ('VITICO', 'H\'f3a Nh\uc0\u7921 a V\u297 nh Ti\u7871 n', '35 T\'f4 Hi\u7871 n Th\'e0nh P14', 'TP', '3987980'),\
+    ('VTP', 'Van H\uc0\u432 ng Ph\'e1t', '119 B\u7841 ch V\'e2n P17', 'HN', '3765768');\
+\
+INSERT INTO `NhanVien` (`MaNV`, `HoLot`, `TenNV`, `Phai`, `LuongCB`, `NgayNViec`, `DiaChiNV`, `DienThoaiNV`, `HinhNV`, `MaDV`) VALUES\
+(1, 'Nguyen', 'Van A' ,'M', '5000000', '2023-05-04', 'H\'e0 N\uc0\u7897 i', '09800000', '', 'GD'),\
+(2, 'Nguyen', 'Van B' ,'M', '1000000', '2023-05-04', 'Can Tho', '09800001', '', 'KT'),\
+(3, 'Nguyen', 'Van C' ,'M', '4000000', '2023-05-04', 'H\uc0\u7843 i Ph\'f2ng', '09800002', '', 'NV'),\
+(4, 'Nguyen', 'Thi D' ,'F', '3000000', '2023-05-04', 'H\'e0 N\uc0\u7897 i', '09800003', '', 'TC'),\
+(5, 'Nguyen', 'Thi E' ,'F' ,'8000000', '2023-05-04', 'H\'e0 N\uc0\u7897 i', '09800004', '', 'GD'),\
+(6, 'Nguyen', 'Van G' ,'M', '7000000', '2023-05-04', 'H\'e0 N\uc0\u7897 i', '09800005', '', 'GD'),\
+(7, 'Nguyen', 'Van H' ,'M', '3000000', '2023-05-04', 'Nam \uc0\u272 \u7883 nh', '09800006', '', 'KT'),\
+(8, 'Nguyen', 'Van K' ,'M', '4000000', '2023-05-04', 'Nha Trang', '09800007', '', 'NV'),\
+(9, 'Nguyen', 'Thi L' ,'F', '5000000', '2023-05-04', 'Vinh', '09800008', '', 'TC'),\
+(10, 'Nguyen', 'Thi M' ,'F' ,'4000000', '2023-05-04', 'TP. H\uc0\u7891  Ch\'ed Minh', '09800009', '', 'GD');\
+\
+INSERT INTO `ChamCong` (`Thang`, `Nam`, `MaNV`, `NgayCong`) VALUES\
+(1, 2023, 1, 1),\
+(1, 2023, 2, 2),\
+(1, 2023, 3, 3),\
+(1, 2023, 4, 4),\
+(1, 2023, 5, 5),\
+(1, 2023, 6, 6),\
+(1, 2023, 7, 7),\
+(1, 2023, 8, 8),\
+(1, 2023, 9, 9),\
+(1, 2023, 10, 10);\
+\
+INSERT INTO `DonDatHang` (`MaDDH`, `MaKH`, `MaNV`, `NgayDH`, `NgayGiao`) VALUES\
+('DH01', 'CODACO', 1, '2023-09-28', '2023-10-02'),\
+('DH02', 'COTEC', 2, '2023-08-29', '2023-09-03'),\
+('DH03', 'DHP', 3, '2023-10-30', '2023-11-04'),\
+('DH04', 'RUBIMEX', 4, '2023-11-30', '2023-12-05'),\
+('DH05', 'SAMACO', 5, '2023-12-01', '2023-12-06');\
+\
+INSERT INTO `ChiTietDDH` (`MaDDH`, `MaMH`, `SoLuong`, `GiamGia`) VALUES\
+('DH01', 1, 1, 0.5),\
+('DH01', 2, 3, 0.5),\
+('DH02', 3, 5, 0.5),\
+('DH02', 4, 7, 0.5),\
+('DH03', 5, 2, 0.5),\
+('DH04', 6, 4, 0.5),\
+('DH05', 7, 6, 0.5);\
+\
+\
+\
+\
+\
+\
+\pard\pardeftab720\ri-340\sl360\slmult1\qc\partightenfactor0
+
+\f0\b \cf0 B\'e0i T\uc0\u7853 p Th\u7921 c H\'e0nh S\u7889  3: Truy v\u7845 n\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 \
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf0 1. Li\uc0\u7879 t k\'ea danh s\'e1ch c\'e1c m\u7863 t h\'e0ng, bao g\u7891 m c\'e1c th\'f4ng tin sau : MaMH, TenMH,\
+DonViTinh, DonGia.\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 SELECT MaMH, TenMH, DonViTinh, DonGia\
+FROM MatHang;\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf0 2. Li\uc0\u7879 t k\'ea c\'e1c m\u7863 t h\'e0ng c\'f3 \u273 \u417 n gi\'e1 >=62 th\'f4ng tin g\u7891 m c\'e1c c\u7897 t sau: MaMH, TenMH,\
+DonViTinh, DonGia.\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 SELECT MaMH, TenMH, DonViTinh, DonGia\
+FROM MatHang\
+WHERE DonGia >= 62;\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf0 3. Li\uc0\u7879 t k\'ea c\'e1c m\u7863 t h\'e0ng m\'e0 nh\'e0 cung c\u7845 p c\'f3 MaNCC l\'e0 4 ho\u7863 c 2 th\'f4ng tin g\u7891 m c\'e1c c\u7897 t sau: MaNCC, TenNCC, MaMH, TenMH, DonViTinh, DonGia.\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 SELECT NhaCungCap.MaNCC, TenNCC, MaMH, TenMH, DonViTinh, DonGia\
+FROM MatHang\
+JOIN NhaCungCap ON MatHang.MaNCC = NhaCungCap.MaNCC\
+WHERE NhaCungCap.MaNCC IN (2, 4);\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf0 4. Li\uc0\u7879 t k\'ea c\'e1c m\u7863 t h\'e0ng m\'e0 nh\'e0 cung c\u7845 p c\'f3 \u273 \u7883 a ch\u7881  t\u7841 i TP.HCM th\'f4ng tin g\u7891 m c\'e1c c\u7897 t sau: MaNCC, TenNCC, DiaChi, MaMH, TenMH, DonViTinh, DonGia.\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 SELECT NhaCungCap.MaNCC, TenNCC, DiaChi, MaMH, TenMH, DonViTinh, DonGia\
+FROM MatHang\
+JOIN NhaCungCap ON MatHang.MaNCC = NhaCungCap
+\f0\b .
+\f1\b0 MaNCC\
+WHERE NhaCungCap.DiaChi = 'TP.HCM';\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf0 5. Li\uc0\u7879 t k\'ea c\'e1c \u273 \u417 n h\'e0ng trong kho\u7843 ng th\u7901 i gian t\u7915  ng\'e0y 01/01/1997 \u273 \u7871 n ng\'e0y\
+31/01/1997 th\'f4ng tin g\uc0\u7891 m c\'e1c tr\u432 \u7901 ng sau: MaDDH, NgayDH, MaKH, TenKH,\
+MaMH, TenMH, SoLuong.\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 SELECT DonDatHang.MaDDH, DonDatHang.NgayDH, KhachHang.MaKH, KhachHang.TenKH, ChiTietDDH.MaMH, MatHang.TenMH, ChiTietDDH.SoLuong\
+FROM DonDatHang \
+JOIN KhachHang ON DonDatHang.MaKH = KhachHang.MaKH\
+JOIN ChiTietDDH ON DonDatHang.MaDDH = ChiTietDDH.MaDDH\
+JOIN MatHang ON ChiTietDDH.MaMH = MatHang.MaMH\
+WHERE DonDatHang.NgayDH BETWEEN '1997-01-01' AND '1997-01-31';\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf0 6. Li\uc0\u7879 t k\'ea c\'e1c \u273 \u417 n h\'e0ng trong th\'e1ng 2 n\u259 m 1997 th\'f4ng tin g\u7891 m c\'e1c tr\u432 \u7901 ng sau : MaDDH, NgayDH, NgayGiao, MaNV, HoTenNV.\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 SELECT DonDatHang.MaDDH, DonDatHang.NgayDH, DonDatHang.NgayGiao, NhanVien.MaNV, NhanVien.HoLot + ' ' + NhanVien.TenNV AS HoTenNV\
+FROM DonDatHang \
+JOIN NhanVien ON DonDatHang.MaNV = NhanVien.MaNV\
+WHERE DonDatHang.NgayDH >= '1997-02-01' AND DonDatHang.NgayDH <= '1997-02-28';\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf0 7. Li\uc0\u7879 t k\'ea c\'e1c \u273 \u417 n \u273 \u7863 t h\'e0ng giao tr\u432 \u7899 c ng\'e0y 01/03/1997 v\'e0 nh\'e2n vi\'ean ph\u7909 c v\u7909  c\'f3 MaNV l\'e0 4 hay 5. Th\'f4ng tin g\u7891 m c\'e1c tr\u432 \u7901 ng sau : MaDDH, NgayDH, MaKH, TenKH, MaNV, HoTenNV.\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 SELECT DonDatHang.MaDDH, DonDatHang.NgayDH, KhachHang.MaKH, KhachHang.TenKH, DonDatHang.MaNV, NhanVien.HoLot + ' ' + NhanVien.TenNV AS HoTenNV\
+FROM DonDatHang \
+JOIN KhachHang ON DonDatHang.MaKH = KhachHang.MaKH\
+JOIN NhanVien ON DonDatHang.MaNV = NhanVien.MaNV\
+WHERE DonDatHang.NgayGiao < '1997-03-01' AND DonDatHang.MaNV IN (4, 5);\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf0 8. Li\uc0\u7879 t k\'ea c\'e1c nh\'e2n vi\'ean thu\u7897 c ph\'e1i Nam. Th\'f4ng tin g\u7891 m c\'e1c tr\u432 \u7901 ng sau: MaNV, HoLot, TenNV, DiaChi, NgayNViec, Phai\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 SELECT MaNV, HoLot, TenNV, DiaChiNV, NgayNViec, Phai\
+FROM NhanVien\
+WHERE Phai = 'M';\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf0 9. Li\uc0\u7879 t k\'ea c\'e1c nh\'e2n vi\'ean nh\u7853 n vi\u7879 c t\u7915  ng\'e0y 01/07/1991 \u273 \u7871 n ng\'e0y 30/11/1992 v\'e0 l\u432 \u417 ng c\u417  b\u7843 n <300 th\'f4ng tin g\u7891 m c\'e1c Field sau: MaDV, MaNV, HoLot, TenNV, Phai, LuongCB, NgayNV.\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 SELECT MaDV, MaNV, HoLot, TenNV, Phai, LuongCB, NgayNViec\
+FROM NhanVien\
+WHERE NgayNViec BETWEEN '1991-07-01' AND '1992-11-30' AND LuongCB < 300;\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf0 10. Li\uc0\u7879 t k\'ea c\'e1c nh\'e2n vi\'ean N\u7919  c\u432  tr\'fa t\u7841 i Q1 Hay Nam. Th\'f4ng tin g\u7891 m c\'e1c field sau: MaNV, HoLot, Ten,NV, Phai, DiaChi.\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 SELECT MaNV, HoLot, TenNV, Phai, DiaChiNV\
+FROM NhanVien\
+WHERE (Phai = 'F' AND DiaChiNV LIKE '%Q1%') OR (Phai = 'M' AND DiaChiNV LIKE '%Nam%');\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf0 11. Li\uc0\u7879 t k\'ea c\'e1c nh\'e2n vi\'ean c\'f3 ng\'e0y c\'f4ng l\'e0m vi\u7879 c trong th\'e1ng 1 n\u259 m 1999 nh\u7887  h\u417 n 25 ng\'e0y th\'f4ng tin g\u7891 m c\'e1c Field sau: MaNV, HoLot, TenNV, MaDV, TenDV, Thang, Nam, NgayCong.\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 SELECT ChamCong.MaNV, NhanVien.HoLot, NhanVien.TenNV, NhanVien.MaDV, DonVi.TenDV, ChamCong.Thang, ChamCong.Nam, ChamCong.NgayCong\
+FROM ChamCong \
+JOIN NhanVien ON ChamCong.MaNV = NhanVien.MaNV\
+JOIN DonVi ON NhanVien.MaDV = DonVi.MaDV\
+WHERE ChamCong.Thang = 1 AND ChamCong.Nam = 1999 AND ChamCong.NgayCong < 25;\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf0 12. Li\uc0\u7879 t k\'ea c\'e1c \u273 \u417 n h\'e0ng m\'e0 nh\'e2n vi\'ean ph\u7909 c v\u7909  thu\u7897 c ph\'e1i n\u7919  th\'f4ng tin g\u7891 m c\'e1c tr\u432 \u7901 ng sau: MaDDH, NgayDH, NgayGiao, MaNV, HoTenNV, Phai.\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 SELECT DonDatHang.MaDDH, DonDatHang.NgayDH, DonDatHang.NgayGiao, NhanVien.MaNV, NhanVien.HoLot + ' ' + NhanVien.TenNV AS HoTenNV, NhanVien.Phai\
+FROM DonDatHang \
+JOIN NhanVien ON DonDatHang.MaNV = NhanVien.MaNV\
+WHERE NhanVien.Phai = 'F';\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf2 13. Li\uc0\u7879 t k\'ea c\'e1c \u273 \u417 n h\'e0ng \u273 \u432 \u7907 c h\u7865 n giao trong v\'f2ng 15 ng\'e0y sau khi \u273 \u7863 t h\'e0ng. Th\'f4ng tin g\u7891 m c\'e1c tr\u432 \u7901 ng sau: MaDDH, NgayDH, NgayGiao, MaKH, TenKH, Th\u7901 i gian (T\u7915  ng\'e0y \u273 \u7863 t h\'e0ng \u273 \u7871 n ng\'e0y giao h\'e0ng)\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 SELECT DonDatHang.MaDDH, DonDatHang.NgayDH, DonDatHang.NgayGiao, KhachHang.MaKH, KhachHang.TenKH,\
+       DATEDIFF(DD, DonDatHang.NgayDH, DonDatHang.NgayGiao) AS ThoiGianGiaoHang\
+FROM DonDatHang \
+JOIN KhachHang ON DonDatHang.MaKH = KhachHang.MaKH\
+WHERE DATEDIFF(DD, DonDatHang.NgayDH, DonDatHang.NgayGiao) <= 15;\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf0 14. Li\uc0\u7879 t k\'ea c\'e1c \u273 \u417 n \u273 \u7863 t h\'e0ng. Th\'f4ng tin g\u7891 m c\'e1c tr\u432 \u7901 ng sau : MaDDH, NgayDH, MaMH, tenMH, SoLuong, DonGia, ThanhTien (Bi\u7871 t ThanhTien = SoLuong*DonGia*(1- GiamGia)\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 SELECT DonDatHang.MaDDH, DonDatHang.NgayDH, ChiTietDDH.MaMH, MatHang.TenMH, ChiTietDDH.SoLuong, MatHang.DonGia, (ChiTietDDH.SoLuong * MatHang.DonGia * (1 - ChiTietDDH.GiamGia)) AS ThanhTien\
+FROM DonDatHang \
+JOIN ChiTietDDH ON DonDatHang.MaDDH = ChiTietDDH.MaDDH\
+JOIN MatHang ON ChiTietDDH.MaMH = MatHang.MaMH;\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf2 15. Li\uc0\u7879 t k\'ea c\'e1c \u273 \u417 n h\'e0ng \u273 \u432 \u7907 c \u273 \u7863 t trong qu\'fd 1 n\u259 m 1997. Th\'f4ng tin g\u7891 m c\'e1c tr\u432 \u7901 ng sau: Nam, Quy, NgayDH, MaDDH, MaKH, TenKH, MaNV, TenNV\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 SELECT DATEPART(YEAR, DonDatHang.NgayDH) AS Nam, DATEPART(QUARTER, DonDatHang.NgayDH) AS Quy,\
+       DonDatHang.NgayDH, DonDatHang.MaDDH, DonDatHang.MaKH, KhachHang.TenKH, DonDatHang.MaNV, NhanVien.TenNV\
+FROM DonDatHang \
+JOIN KhachHang ON DonDatHang.MaKH = KhachHang.MaKH\
+JOIN NhanVien ON DonDatHang.MaNV = NhanVien.MaNV\
+WHERE DATEPART(YEAR, DonDatHang.NgayDH) = 1997 AND DATEPART(QUARTER, DonDatHang.NgayDH) = 1;\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf0 16. Li\uc0\u7879 t k\'ea c\'e1c \u273 \u417 n \u273 \u7863 t h\'e0ng c\'f3 ch\u7913 a c\'e1c m\u7863 t h\'e0ng c\'f3 m\'e3 nh\u432  sau: 1,3,5,7 th\'f4ng tin g\u7891 m: MaDDH, NgayDH, MaMH, TenMH\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 SELECT DonDatHang.MaDDH, DonDatHang.NgayDH, ChiTietDDH.MaMH, MatHang.TenMH\
+FROM DonDatHang \
+JOIN ChiTietDDH ON DonDatHang.MaDDH = ChiTietDDH.MaDDH\
+JOIN MatHang ON ChiTietDDH.MaMH = MatHang.MaMH\
+WHERE ChiTietDDH.MaMH IN (1, 3, 5, 7);\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf0 17. \uc0\u272 \u7871 m t\u7893 ng s\u7889  kh\'e1ch h\'e0ng theo t\u7915 ng TinhTp. Th\'f4ng tin g\u7891 m: MaTP, TongsoKH.\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 SELECT MaTP, COUNT(MaKH) AS TongsoKH\
+FROM KhachHang\
+GROUP BY MaTP;\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf0 18. \uc0\u272 \u7871 m t\u7893 ng s\u7889  nh\'e2n vi\'ean theo t\u7915 ng \u272 \u417 n V\u7883 . Th\'f4ng tin g\u7891 m: MaDV, TenDV,\
+TongSoNV.\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 SELECT MaDV, COUNT(MaNV) AS TongSoNV\
+FROM NhanVien\
+GROUP BY MaDV;\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf2 19. \uc0\u272 \u7871 m s\u7889  \u273 \u417 n h\'e0ng. Th\'f4ng tin g\u7891 m : Nam, MaKH, TenKH, TongSoDonDatHang.\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 SELECT DATEPART(YEAR, NgayDH) AS Nam, COUNT(MaDDH) AS TongSoDDH\
+FROM DonDatHang\
+GROUP BY DATEPART(YEAR, NgayDH);\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf2 20. T\'ednh t\uc0\u7893 ng tr\u7883  (Th\'e0nh ti\u7873 n) c\u7911 a t\u7915 ng \u273 \u417 n h\'e0ng. Th\'f4ng tin g\u7891 m : Nam, MaDDH, MaKH, NgayDH, NgayGiao, TongTri.\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 SELECT DATEPART(YEAR, NgayDH) AS Nam, MaDDH, NgayDH, NgayGiao,\
+       SUM(ChiTietDDH.SoLuong * MatHang.DonGia * (1 - ChiTietDDH.GiamGia)) AS TongTri\
+FROM DonDatHang \
+JOIN ChiTietDDH ON DonDatHang.MaDDH = ChiTietDDH.MaDDH\
+JOIN MatHang ON ChiTietDDH.MaMH = MatHang.MaMH\
+GROUP BY DATEPART(YEAR, NgayDH), MaDDH, NgayDH, NgayGiao;\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf2 21. T\'ednh t\uc0\u7893 ng th\'e0nh ti\u7873 n c\u7911 a t\u7915 ng kh\'e1ch h\'e0ng trong t\u7915 ng n\u259 m. Th\'f4ng tin g\u7891 m: Nam, MaKH, TenKH, TongTien\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 SELECT DATEPART(YEAR, DonDatHang.NgayDH) AS Nam, DonDatHang.MaKH, KhachHang.TenKH,\
+       SUM(ChiTietDDH.SoLuong * MatHang.DonGia * (1 - ChiTietDDH.GiamGia)) AS TongTien\
+FROM DonDatHang \
+JOIN ChiTietDDH ON DonDatHang.MaDDH = ChiTietDDH.MaDDH\
+JOIN MatHang ON ChiTietDDH.MaMH = MatHang.MaMH\
+JOIN KhachHang ON DonDatHang.MaKH = KhachHang.MaKH\
+GROUP BY DATEPART(YEAR, DonDatHang.NgayDH), DonDatHang.MaKH, KhachHang.TenKH;\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf2 22. Li\uc0\u7879 t k\'ea danh s\'e1ch kh\'e1ch h\'e0ng c\'f3 t\u7893 ng tr\u7883  \u273 \u7863 t h\'e0ng nhi\u7873 u nh\u7845 t trong n\u259 m 1998. Th\'f4ng tin g\u7891 m : MaKH, TenKH, Nam, TongTienMax.\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 SELECT DonDatHang.MaKH, KhachHang.TenKH, 1998 AS Nam, \
+       SUM(ChiTietDDH.SoLuong * MatHang.DonGia * (1 - ChiTietDDH.GiamGia)) AS TongTienMax\
+FROM DonDatHang DDH\
+JOIN ChiTietDDH ON DonDatHang.MaDDH = ChiTietDDH.MaDDH\
+JOIN MatHang ON ChiTietDDH.MaMH = MatHang.MaMH\
+JOIN KhachHang ON DonDatHang.MaKH = KhachHang.MaKH\
+WHERE DATEPART(YEAR, DonDatHang.NgayDH) = 1998\
+GROUP BY DonDatHang.MaKH, KhachHang.TenKH\
+HAVING SUM(ChiTietDDH.SoLuong * MatHang.DonGia * (1 - ChiTietDDH.GiamGia)) = (\
+    SELECT MAX(TongTien)\
+    FROM (\
+        SELECT DonDatHang.MaKH, SUM(ChiTietDDH.SoLuong * MatHang.DonGia * (1 - ChiTietDDH.GiamGia)) AS TongTien\
+        FROM DonDatHang\
+        JOIN ChiTietDDH ON DonDatHang.MaDDH = ChiTietDDH.MaDDH\
+        JOIN MatHang ON ChiTietDDH.MaMH = MatHang.MaMH\
+        WHERE DATEPART(YEAR, DonDatHang.NgayDH) = 1998\
+        GROUP BY DonDatHang.MaKH\
+    ) AS T\
+);\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf2 23. Li\uc0\u7879 t k\'ea danh s\'e1ch c\'e1c m\u7863 t h\'e0ng c\'f3 t\u7893 ng gi\'e1 tr\u7883  \u273 \u7863 t h\'e0ng nhi\u7873 u nh\u7845 t trong 1997 th\'f4ng tin g\u7891 m : MaMH, TenMH, Nam, TongTienMax\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 SELECT MatHang.MaMH, TenMH, Nam, MAX(TongTien) AS TongTienMax\
+FROM (\
+    SELECT MatHang.MaMH, TenMH, YEAR(DonDatHang.NgayDH) AS Nam, SUM(SoLuong * DonGia * (1 - IFNULL(GiamGia, 0))) AS TongTien\
+    FROM DonDatHang\
+    JOIN ChiTietDDH ON DonDatHang.MaDDH = ChiTietDDH.MaDDH\
+    JOIN MatHang ON ChiTietDDH.MaMH = MatHang.MaMH\
+    WHERE YEAR(DonDatHang.NgayDH) = 1997\
+    GROUP BY MatHang.MaMH, TenMH, Nam\
+) AS TongTienNam\
+GROUP BY MatHang.MaMH, TenMH, Nam\
+HAVING TongTienMax = (\
+    SELECT MAX(TongTien) AS MaxTongTien\
+    FROM (\
+        SELECT YEAR(NgayDH) AS Nam, SUM(SoLuong * DonGia * (1 - IFNULL(GiamGia, 0))) AS TongTien\
+        FROM DonDatHang\
+        JOIN ChiTietDDH ON DonDatHang.MaDDH = ChiTietDDH.MaDDH\
+        JOIN MatHang ON ChiTietDDH.MaMH = MatHang.MaMH\
+        WHERE YEAR(NgayDH) = 1997\
+        GROUP BY Nam\
+    ) AS TongTienNamMax\
+);\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf2 24. Cu\uc0\u7889 i n\u259 m c\'f4ng ty mu\u7889 n t\u7863 ng l\u7883 ch cho kh\'e1ch h\'e0ng v\u7899 i quy \u273 \u7883 nh nh\u432  sau: 1 \u273 \u417 n \u273 \u7863 t h\'e0ng 2 cu\u7889 n l\u7883 ch. T\u7841 o truy v\u7845 n g\u7891 m c\'e1c th\'f4ng tin sau: MaKH, TenKH, DiaChi,\
+SoDDH, SoLichTang.\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 SELECT ChiTietDDH.MaMH, MH.TenMH, 1997 AS Nam, \
+       SUM(ChiTietDDH.SoLuong * MH.DonGia * (1 - ChiTietDDH.GiamGia)) AS TongTienMax\
+FROM DonDatHang\
+JOIN ChiTietDDH ON DonDatHang.MaDDH = ChiTietDDH.MaDDH\
+JOIN MatHang ON ChiTietDDH.MaMH = MatHang.MaMH\
+WHERE DATEPART(YEAR, DonDatHang.NgayDH) = 1997\
+GROUP BY ChiTietDDH.MaMH, MatHang.TenMH\
+HAVING SUM(ChiTietDDH.SoLuong * MatHang.DonGia * (1 - ChiTietDDH.GiamGia)) = (\
+    SELECT MAX(TongTien)\
+    FROM (\
+        SELECT ChiTietDDH.MaMH, SUM(ChiTietDDH.SoLuong * MatHang.DonGia * (1 - ChiTietDDH.GiamGia)) AS TongTien\
+        FROM DonDatHang \
+        JOIN ChiTietDDH ON DonDatHang.MaDDH = CT.MaDDH\
+        JOIN MatHang ON ChiTietDDH.MaMH = MatHang.MaMH\
+        WHERE DATEPART(YEAR, DonDatHang.NgayDH) = 1997\
+        GROUP BY ChiTietDDH.MaMH\
+    ) AS T\
+);\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf0 25. Th\uc0\u7889 ng k\'ea t\u7893 ng l\u432 \u417 ng nh\'e2n vi\'ean c\u7911 a t\u7915 ng \u272 \u417 n v\u7883  trong n\u259 m 1999. th\'f4ng tin g\u7891 m:\
+MaDV, TenDV, Thang, TongLuong.\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 SELECT DonVi.MaDV, DonVi.TenDV, MONTH(NhanVien.NgayNViec) AS Thang, SUM(LuongCB) AS TongLuong\
+FROM NhanVien\
+JOIN DonVi ON NhanVien.MaDV = DonVi.MaDV\
+WHERE YEAR(NhanVien.NgayNViec) = 1999\
+GROUP BY DonVi.MaDV, DonVi.TenDV, MONTH(NhanVien.NgayNViec);\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf0 26. Li\uc0\u7879 t k\'ea \u272 \u417 n v\u7883  c\'f3 t\u7893 ng l\u432 \u417 ng trong n\u259 m 1999. l\u7899 n nh\u7845  t th\'f4ng tin g\u7891 m : MaDV,\
+TenDV, Thang, TongLuongMax.\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 SELECT NhanVien.MaDV, DonVi.TenDV, 1999 AS Nam, \
+       SUM(NhanVien.LuongCB * ChamCong.NgayCong) AS TongLuong\
+FROM NhanVien \
+JOIN DonVi ON NhanVien.MaDV = DonVi.MaDV\
+JOIN ChamCong ON NhanVien.MaNV = ChamCong.MaNV\
+WHERE ChamCong.Nam = 1999\
+GROUP BY NhanVien.MaDV, DonVi.TenDV;\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf2 27. T\uc0\u7841 o Table LuuDDH g\u7891 m c\'e1c \u273 \u417 n \u273 \u7863 t h\'e0ng trong n\u259 m 1997,1998 v\'e0 1999 g\u7891 m c\'e1c tr\u432 \u7901 ng sau : MaDDH, MaKH, NgayDH, NgayGiao, MaMH, SoLuong, GiamGia.\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 CREATE TABLE LuuDDH AS\
+SELECT MaDDH, MaKH, NgayDH, NgayGiao, MaMH, SoLuong, GiamGia\
+FROM DonDatHang\
+JOIN ChiTietDDH ON DonDatHang.MaDDH = ChiTietDDH.MaDDH\
+WHERE YEAR(NgayDH) IN (1997, 1998, 1999);\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf2 28. X\'f3a Trong Table LuuDDH c\'e1c \uc0\u273 \u417 n \u273 \u7863 t h\'e0ng 1997\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 DELETE FROM LuuDDH\
+WHERE YEAR(NgayDH) = 1997;\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf2 29. T\uc0\u259 ng 2% gi\u7843 m gi\'e1 trong Table LuuDDH cho c\'e1c \u273 \u417 n \u273 \u7863 t h\'e0ng trong n\u259 m 1999\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 UPDATE LuuDDH\
+SET GiamGia = GiamGia + 0.02\
+WHERE DATEPART(YEAR, NgayDH) = 1999;\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf2 30. T\uc0\u7841 o table Luong9901 (b\u7843 ng l\u432 \u417 ng th\'e1ng 1 n\u259 m 1999) g\u7891 m c\'e1c Field sau: Thang, Nam, MaNV, HoTen, LuongCB, NgayCong, Luong. (bi\u7871 t l\u432 \u417 ng = Lu\u417 ng c\u259 n b\u7843 n * Ng\'e0y c\'f4ng)\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 SELECT 1 AS Thang, 1999 AS Nam, MaNV, HoLot + ' ' + TenNV AS HoTen,\
+       LuongCB, NgayCong, LuongCB * NgayCong AS Luong\
+INTO Luong9901\
+FROM NhanVien\
+WHERE DATEPART(MONTH, NgayNViec) = 1 AND DATEPART(YEAR, NgayNViec) = 1999;
+\f0\b \
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+\cf2 31. T\uc0\u259 ng l\u432 \u417 ng c\'e1c nh\'e2n vi\'ean trong b\u7843 ng l\u432 \u417 ng Luong9901 t\u259 ng 10% \u273 \u7889 i v\u7899 i c\'e1c nh\'e2n vi\'ean Nam v\'e0 20% \u273 \u7889 i v\u7899 i c\'e1c nh\'e2n vi\'ean n\u7919  v\'e0 \u273 i\u7873 u ki\u7879 n l\'e0 c\'f3 ng\'e0y c\'f4ng > 20 ng\'e0y.\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 UPDATE Luong9901\
+SET LuongCB = LuongCB * 1.1\
+WHERE Phai = 'M' AND NgayCong > 20;\
+\
+UPDATE Luong9901\
+SET LuongCB = LuongCB * 1.\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf2 32. Li\uc0\u7879 t k\'ea c\'e1c m\u7863 t h\'e0ng kh\'f4ng c\'f3 \u273 \u7863 t h\'e0ng trong kho\u7843 ng th\u7901 i gian [t\u7915  1/5/1997] [\u273 \u7871 n 1/5/1998]\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 SELECT MH.MaMH, MH.TenMH\
+FROM MatHang MH\
+LEFT JOIN ChiTietDDH CT ON MH.MaMH = CT.MaMH\
+LEFT JOIN DonDatHang DDH ON CT.MaDDH = DonDatHang.MaDDH\
+WHERE (DonDatHang.NgayDH IS NULL OR DonDatHang.NgayDH < '1998-05-01') AND (DonDatHang.NgayGiao IS NULL OR DonDatHang.NgayGiao >= '1997-05-01');\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+\cf0 \
+\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+\cf0 \
+\
+\
+\
+\pard\pardeftab720\ri-340\sl360\slmult1\qc\partightenfactor0
+
+\f0\b \cf0 B\'e0i T\uc0\u7853 p Th\u7921 c H\'e0nh S\u7889  3: Function \'96 Procedure \'96 Trigger\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+\cf0 1. T\uc0\u7841 o Function t\'ednh t\u7893 ng doanh thu c\u7911 a n\u259 m 1997.\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 CREATE FUNCTION TongDoanhThuNam1997() \
+RETURNS int\
+BEGIN\
+    DECLARE @TongDT int\
+    SELECT @TongDT = SUM(ChiTietDDH.SoLuong * MatHang.DonGia * (1 - ChiTietDDH.GiamGia))\
+    FROM DonDatHang \
+    JOIN ChiTietDDH ON DDH.MaDDH = ChiTietDDH.MaDDH\
+    JOIN MatHang ON ChiTietDDH.MaMH = MatHang.MaMH\
+    WHERE DATEPART(YEAR, DonDatHang.NgayDH) = 1997;\
+    RETURN @TongDT;\
+END;\
+SELECT TongDoanhThuNam1997() AS TongDoanhThu1997;\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf0 2. T\uc0\u7841 o Function t\'ednh t\u7893 ng doanh thu c\u7911 a m\u7897 t n\u259 m (\u273 \u432 \u7907 c truy\u7873 n tham s\u7889 ).\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 CREATE FUNCTION TongDoanhThuNam(@Nam INT)\
+RETURNS INT\
+AS\
+BEGIN\
+    DECLARE @TongDTN INT;\
+    SELECT @TongDTN  = SUM(SoLuong * DonGia * (1 - GiamGia)) \
+    FROM DonDatHang\
+    JOIN ChiTietDDH ON DonDatHang.MaDDH = ChiTietDDH.MaDDH\
+    JOIN MatHang ON ChiTietDDH.MaMH = MatHang.MaMH\
+    WHERE DATEPART(YEAR, DonDatHang.NgayDH) = @Nam;    \
+RETURN @TongDTN;\
+END;\
+SELECT TongDoanhThuNam(@Nam) AS TongDoanhThu;\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf0 3. T\uc0\u7841 o Function t\'ednh t\u7893 ng th\'e0nh ti\u7873 n c\u7911 a m\u7897 t \u273 \u417 n \u273 \u7863 t h\'e0ng (\u273 \u432 \u7907 c truy\u7873 n tham s\u7889 ).\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 CREATE FUNCTION TongTTDonHang(@MaDDH CHAR(5))\
+RETURNS INT\
+AS\
+BEGIN\
+    DECLARE @TongTT int;\
+    SELECT @TongTT = SUM(SoLuong * DonGia * (1 - GiamGia))\
+    JOIN MatHang ON ChiTietDDH.MaMH = MatHang.MaMH\
+    WHERE ChiTietDDH.MaDDH = @MaDDH;\
+    RETURN @TongTT;\
+END;\
+DECLARE @MaDDH CHAR(5) = ' ';\
+SELECT TongTTDonHang (@MaDDH) AS Tong;\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf0 4. T\uc0\u7841 o Function t\'ednh t\u7893 ng doanh thu c\u7911 a m\u7897 t nh\'e2n vi\'ean (\u273 \u432 \u7907 c truy\u7873 n tham s\u7889 ).\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 CREATE FUNCTION TongDTNV(@MaNV int)\
+RETURNS INT\
+AS\
+BEGIN\
+    DECLARE @TongDTNV int;\
+    SELECT @ TongDTNV = SUM(SoLuong * DonGia * (1 - GiamGia))\
+\pard\pardeftab720\li993\ri-340\sl360\slmult1\partightenfactor0
+\cf0 FROM DonDatHang\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+\cf0     JOIN ChiTietDDH ON DonDatHang.MaMH = ChiTietDDH.MaMH\
+\pard\pardeftab720\li993\ri-340\sl360\slmult1\partightenfactor0
+\cf0 JOIN MatHang ON ChiTietDDH.MaMH = MatHang.MaMH\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+\cf0     WHERE DonDatHang.MaNV = @MaNV;\
+    RETURN @TongDTNV;\
+END;\
+DECLARE @MaNV int = 2;\
+SELECT TongDTNV (@MaNV) AS TongDTNV;\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf0 5. Th\uc0\u7921 c hi\u7879 n l\u7841 i c\'e1c c\'e2u truy v\u7845 n tr\'ean v\u7899 i Procedure.\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+\cf0 5.1.\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 CREATE PROCEDURE TongDoanhThuNam1997Procedure\
+AS\
+BEGIN\
+    DECLARE @TongDT INT;\
+    SELECT @TongDT = SUM(ChiTietDDH.SoLuong * MatHang.DonGia * (1 - ChiTietDDH.GiamGia))\
+    FROM DonDatHang \
+    JOIN ChiTietDDH ON DonDatHang.MaDDH = ChiTietDDH.MaDDH\
+    JOIN MatHang ON ChiTietDDH.MaMH = MatHang.MaMH\
+    WHERE DATEPART(YEAR, DonDatHang.NgayDH) = 1997;\
+    SELECT @TongDT AS TongDoanhThu1997;\
+END;\
+\
+EXEC TongDoanhThuNam1997Procedure;\
+\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf0 5.2.\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 CREATE PROCEDURE TongDoanhThuNamProcedure\
+    @Nam INT\
+AS\
+BEGIN\
+    DECLARE @TongDTN INT;\
+    SELECT @TongDTN = SUM(SoLuong * DonGia * (1 - GiamGia)) \
+    FROM DonDatHang\
+    JOIN ChiTietDDH ON DonDatHang.MaDDH = ChiTietDDH.MaDDH\
+    JOIN MatHang ON ChiTietDDH.MaMH = MatHang.MaMH\
+    WHERE DATEPART(YEAR, DonDatHang.NgayDH) = @Nam;\
+    SELECT @TongDTN AS TongDoanhThu;\
+END;\
+DECLARE @Nam INT;\
+SET @Nam = 1997; \
+EXEC TongDoanhThuNamProcedure @Nam;\
+\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf0 5.3.\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 CREATE PROCEDURE TongThanhTienDonHangProcedure\
+    @MaDDH CHAR(5)\
+AS\
+BEGIN\
+    DECLARE @TongTT INT;\
+    SELECT @TongTT = SUM(SoLuong * DonGia * (1 - GiamGia))\
+    FROM ChiTietDDH\
+    JOIN MatHang ON ChiTietDDH.MaMH = MatHang.MaMH\
+    WHERE ChiTietDDH.MaDDH = @MaDDH;\
+    SELECT @TongTT AS Tong;\
+END;\
+\
+DECLARE @MaDDH CHAR(5) = 'DDH001'; \
+EXEC TongThanhTienDonHangProcedure @MaDDH;\
+\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf0 5.4.\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 CREATE PROCEDURE TongDoanhThuNhanVienProcedure\
+    @MaNV INT\
+AS\
+BEGIN\
+    DECLARE @TongDTNV INT;\
+    SELECT @TongDTNV = SUM(SoLuong * DonGia * (1 - GiamGia))\
+    FROM DonDatHang\
+    JOIN ChiTietDDH ON DonDatHang.MaDDH = ChiTietDDH.MaDDH\
+    JOIN MatHang ON ChiTietDDH.MaMH = MatHang.MaMH\
+    WHERE DonDatHang.MaNV = @MaNV;\
+    SELECT @TongDTNV AS TongDoanhThuNV;\
+END;\
+\
+DECLARE @MaNV INT = 2; \
+EXEC TongDoanhThuNhanVienProcedure @MaNV;\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf0 6. T\uc0\u7841 o Procedure li\u7879 t k\'ea danh s\'e1ch nh\'e2n vi\'ean theo ph\'e1i (\u273 \u432 \u7907 c truy\u7873 n tham s\u7889 ).\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 CREATE PROCEDURE DSNV(@Phai CHAR(1))\
+BEGIN\
+    SELECT * FROM NhanVien\
+    WHERE Phai = @Phai;\
+END;\
+\
+DECLARE @Phai CHAR(1) = 'Nu'; \
+EXEC DSNV @Phai;\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf0 7. 8. T\uc0\u7841 o Procedure li\u7879 t k\'ea danh s\'e1ch m\u7863 t h\'e0ng theo \u273 \u417 n \u273 \u7863 t h\'e0ng (\u273 \u432 \u7907 c truy\u7873 n tham s\u7889 ).\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 CREATE PROCEDURE LKmathangDDH(@MaDDH CHAR(5))\
+BEGIN\
+    SELECT * FROM ChiTietDDH\
+    WHERE MaDDH = @MaDDH;\
+END;\
+\
+DECLARE @MaDDH CHAR(5) = '001'; \
+EXEC LKmathangDDH @MaDDH;\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf0 9. T\uc0\u7841 o Procedure li\u7879 t k\'ea danh s\'e1ch m\u7863 t h\'e0ng theo nh\'e0 cung c\u7845 p (\u273 \u432 \u7907 c truy\u7873 n tham s\u7889 ).\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 CREATE PROCEDURE LKmathangNCC(@MaNCC int)\
+BEGIN\
+    SELECT * FROM MatHang\
+    WHERE MatHang.MaNCC = @MaNCC;\
+END;\
+\
+DECLARE @MaNCC INT = 2; \
+EXEC LKmathangNCC @MaNCC;\
+\pard\pardeftab720\ri-340\sl360\slmult1\partightenfactor0
+
+\f0\b \cf0 10. T\uc0\u7841 o Procedure li\u7879 t k\'ea danh s\'e1ch \u273 \u417 n \u273 \u7863 t h\'e0ng \u273 \u432 \u7907 c \u273 \u7863 t t\u7915  ng\'e0y A \u273 \u7871 n ng\'e0y B (A, B \u273 \u432 \u7907 c truy\u7873 n tham s\u7889 ).\
+\pard\pardeftab720\li720\ri-340\sl360\slmult1\partightenfactor0
+
+\f1\b0 \cf0 CREATE PROCEDURE LKmathangNgay \
+    @NgayBatDau DATE,\
+    @NgayKetThuc DATE\
+AS\
+BEGIN\
+    SELECT *\
+    FROM DonDatHang\
+    WHERE NgayDH BETWEEN @NgayBatDau AND @NgayKetThuc;\
+END;\
+\
+DECLARE @NgayBatDau DATE = '2023-01-01'; \
+DECLARE @NgayKetThuc DATE = '2023-12-31'; \
+EXEC LKmathangNgay @NgayBatDau, @NgayKetThuc;\
+}
